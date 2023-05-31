@@ -10,4 +10,14 @@
       <postal-code>10001</postal-code>
     </address>
   </person>
+  <person>
+    <name>Jane Smith</name>
+    <age>25</age>
+    <address>
+      <street>First Avenue</street>
+      <city>Los Angeles</city>
+      <state>CA</state>
+      <postal-code>90001</postal-code>
+    </address>
+  </person>
 </root>
