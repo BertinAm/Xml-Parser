@@ -23,36 +23,36 @@ class Node:          # Node class to represent a node in the DOM tree
             self.text = ""      # set the text to empty
         self.text += text       # append the text to the text attribute
 
-    def to_string(self, indent=0):    #   
-        res = " " * indent + "<" + self.tag_name
-        for attr, value in self.attributes.items():
-            res += f' {attr}="{value}"'
-        if self.text or self.children:
-            res += ">"
-            if self.text:
-                res += self.text
-            for child in self.children:
-                res += "\n" + child.to_string(indent + 2)
-            res += "\n" + " " * indent + "</" + self.tag_name + ">"
-        else:
-            res += "/>"
-        return res
+    def to_string(self, indent=0): # method to convert the node to a string
+        res = " " * indent + "<" + self.tag_name  # creating a string with the tag name
+        for attr, value in self.attributes.items(): # iterating through the attributes
+            res += f' {attr}="{value}"'   # adding the attribute to the string
+        if self.text or self.children:  # if the node has text or children
+            res += ">"  # add a closing '>' character
+            if self.text: # if the node has text
+                res += self.text # add the text to the string
+            for child in self.children:  # iterating through the children
+                res += "\n" + child.to_string(indent + 2) # adding the child to the string
+            res += "\n" + " " * indent + "</" + self.tag_name + ">"  # adding the closing tag to the string
+        else: # if the node has no text or children
+            res += "/>"  # add a self-closing '/>' character
+        return res  # return the string
 
 
-class Document:
-    def __init__(self):
-        self.root = None
+class Document: # Document class to represent the DOM tree
+    def __init__(self): # Constructor to initialize the document
+        self.root = None  #  creating a root attribute
 
-    def create_element(self, tag_name):
-        return Node(tag_name)
+    def create_element(self, tag_name):  # method to create a new node
+        return Node(tag_name)   # returning a new node
 
-    def set_root(self, node):
-        self.root = node
+    def set_root(self, node):   #  method to set the root node
+        self.root = node   # setting the root node
 
-    def to_string(self):
-        if self.root:
-            return self.root.to_string()
-        return ""
+    def to_string(self):  # method to convert the DOM tree to a string
+        if self.root:  # if the root node exists
+            return self.root.to_string()  # return the string representation of the root node
+        return ""  # return an empty string if the root node does not exist
 
 
 def parse_xml(xml_content):
@@ -99,47 +99,47 @@ def parse_xml(xml_content):
 
 
 
-def generate_xml(xml_content, output_file_path):
-    doc = parse_xml(xml_content)
-    xml_string = doc.to_string()
+def generate_xml(xml_content, output_file_path): # function to generate the XML
+    doc = parse_xml(xml_content) # parse the XML content
+    xml_string = doc.to_string() # convert the DOM tree to a string
 
-    with open(output_file_path, "w") as file:
-        file.write(xml_string)
+    with open(output_file_path, "w") as file: # open the output file
+        file.write(xml_string) # write the XML string to the file
 
-    print("XML generated and saved to", output_file_path)
-
-
+    print("XML generated and saved to", output_file_path)   # print a message to the console
 
 
 
 
-def open_file_dialog(output_text):
-    file_path = filedialog.askopenfilename(filetypes=[("XML Files", "*.xml")])
-    if file_path:
-        with open(file_path, "r") as file:
-            xml_content = file.read()
-        output_file_path = filedialog.asksaveasfilename(defaultextension=".xml", filetypes=[("XML Files", "*.xml")])
-        if output_file_path:
-            generate_xml(xml_content, output_file_path)
-            with open(output_file_path, "r") as output_file:
-                output_text.delete("1.0", tk.END)
-                output_text.insert(tk.END, output_file.read())
+
+
+def open_file_dialog(output_text): # function to open the file dialog
+    file_path = filedialog.askopenfilename(filetypes=[("XML Files", "*.xml")])  # open the file dialog
+    if file_path:  # if a file was selected
+        with open(file_path, "r") as file:  # open the file
+            xml_content = file.read() # read the file content
+        output_file_path = filedialog.asksaveasfilename(defaultextension=".xml", filetypes=[("XML Files", "*.xml")])  # open the file dialog
+        if output_file_path: # if a file was selected
+            generate_xml(xml_content, output_file_path) # generate the XML
+            with open(output_file_path, "r") as output_file:  # open the output file
+                output_text.delete("1.0", tk.END)  # clear the text widget
+                output_text.insert(tk.END, output_file.read())  # insert the XML into the text widget
 
 
 
 
-def main():
-    root = tk.Tk()
-    root.title("XML Generator")
+def main():  # main function
+    root = tk.Tk() # create a root window
+    root.title("XML Generator")  # set the title of the window
 
-    open_button = tk.Button(root, text="Open XML File", command=lambda: open_file_dialog(output_text))
-    open_button.pack()
+    open_button = tk.Button(root, text="Open XML File", command=lambda: open_file_dialog(output_text))   # create a button to open the file dialog
+    open_button.pack()  # pack the button into the window
 
-    output_text = tk.Text(root, height=100, width=100)
-    output_text.pack()
+    output_text = tk.Text(root, height=100, width=100)  # create a text widget to display the XML
+    output_text.pack()  # pack the text widget into the window
 
-    root.mainloop()
+    root.mainloop()  # start the main loop
 
 
-if __name__ == "__main__":
-    main()
+if __name__ == "__main__": # if the script is run directly
+    main() # run the main function
