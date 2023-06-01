@@ -23,7 +23,7 @@ class Node:          # Node class to represent a node in the DOM tree
             self.text = ""      # set the text to empty
         self.text += text       # append the text to the text attribute
 
-    def to_string(self, indent=0):
+    def to_string(self, indent=0):    #   
         res = " " * indent + "<" + self.tag_name
         for attr, value in self.attributes.items():
             res += f' {attr}="{value}"'
