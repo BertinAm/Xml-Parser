@@ -5,7 +5,7 @@ The XML-Parser is a Python program that allows you to open an XML file, parse it
 
 ### How to Run
 
-To run the XML Generator program, follow these steps:
+To run the XML-Parser program, follow these steps:
 
 1. Make sure you have Python installed on your system (version 3 or above).
 
@@ -24,7 +24,7 @@ To run the XML Generator program, follow these steps:
    ```
    Replace `program_name.py` with the actual name of the Python script containing the program code.
 
-6. The XML Generator GUI window will open. Click the "Open XML File" button to select an XML file for processing.
+6. The XML-Parser GUI window will open. Click the "Open XML File" button to select an XML file for processing.
 
 7. If the XML file is valid, you will be prompted to save the generated XML file. Choose a location and enter a file name.
 
@@ -32,7 +32,7 @@ To run the XML Generator program, follow these steps:
 
 ### Required Libraries
 
-The XML Generator program requires the following libraries:
+The XML-Parser program requires the following libraries:
 
 - Tkinter: Used for creating the graphical user interface (GUI) and file dialog functionality. It is usually included with standard Python installations.
 
@@ -47,7 +47,7 @@ The program consists of the following files:
 
 ### Support and Contributions
 
-If you encounter any issues with the XML Generator or have suggestions for improvements, please create a new issue on the GitHub repository. Contributions are also welcome through pull requests.
+If you encounter any issues with the XML-Parser or have suggestions for improvements, please create a new issue on the GitHub repository. Contributions are also welcome through pull requests.
 
 ### License
 
