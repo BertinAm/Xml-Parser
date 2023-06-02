@@ -1,6 +1,8 @@
 import tkinter as tk    # importing the tkinter library as tk
 from tkinter import filedialog # importing the filedialog module from tkinter
-
+import validate
+from parse import Parser, remove_empty_values
+import json
 
 class Node:          # Node class to represent a node in the DOM tree
     def __init__(self, tag_name):   # Constructor to initialize the node
@@ -100,31 +102,44 @@ def parse_xml(xml_content):
 
 
 def generate_xml(xml_content, output_file_path): # function to generate the XML
-    doc = parse_xml(xml_content) # parse the XML content
-    xml_string = doc.to_string() # convert the DOM tree to a string
+        doc = parse_xml(xml_content) # parse the XML content
+        xml_string = doc.to_string() # convert the DOM tree to a string
+        with open(output_file_path, "w") as file: # open the output file
+            file.write(xml_string) # write the XML string to the file
 
-    with open(output_file_path, "w") as file: # open the output file
-        file.write(xml_string) # write the XML string to the file
+        print("XML generated and saved to", output_file_path)   # print a message to the console
 
-    print("XML generated and saved to", output_file_path)   # print a message to the console
-
-
-
+    
 
 
 
-def open_file_dialog(output_text): # function to open the file dialog
+
+
+
+def open_file_dialog(output_text, parsed_output_text): # function to open the file dialog
     file_path = filedialog.askopenfilename(filetypes=[("XML Files", "*.xml")])  # open the file dialog
     if file_path:  # if a file was selected
         with open(file_path, "r") as file:  # open the file
             xml_content = file.read() # read the file content
-        output_file_path = filedialog.asksaveasfilename(defaultextension=".xml", filetypes=[("XML Files", "*.xml")])  # open the file dialog
-        if output_file_path: # if a file was selected
-            generate_xml(xml_content, output_file_path) # generate the XML
-            with open(output_file_path, "r") as output_file:  # open the output file
-                output_text.delete("1.0", tk.END)  # clear the text widget
-                output_text.insert(tk.END, output_file.read())  # insert the XML into the text widget
-
+        if validate.validate_xml(xml_content) == True:
+            output_file_path = filedialog.asksaveasfilename(defaultextension=".xml", filetypes=[("XML Files", "*.xml")])  # open the file dialog
+            if output_file_path: # if a file was selected
+                extracted_content = Parser(xml_content).parse() # extract the content from the XML
+                cleaned_content = remove_empty_values(extracted_content) # clean the content
+                generate_xml(xml_content, output_file_path) # generate the XML
+                with open(output_file_path, "r") as output_file:  # open the output file
+                    output_text.delete("1.0", tk.END)  # clear the text widget
+                    output_text.insert(tk.END, output_file.read())  # insert the XML into the text widget
+                    parsed_output_text.delete("1.0", tk.END)  # clear the text widget
+                    parsed_output_text.insert(tk.END, cleaned_content)  # insert the XML into the text widget
+                    with open("output.json", "w") as file:
+                        # Write the content to the file with indentation
+                        file.write(json.dumps(cleaned_content, indent=4))
+        else:
+            output_text.delete("1.0", tk.END)
+            output_text.insert(tk.END, validate.validate_xml())  # insert the XML into the text widget
+            parsed_output_text.delete("1.0", tk.END)  # clear the text widget
+            parsed_output_text.insert(tk.END, "Couldn't display cause document is invalid")  # insert the XML into the text widget  
 
 
 
@@ -132,11 +147,18 @@ def main():  # main function
     root = tk.Tk() # create a root window
     root.title("XML Generator")  # set the title of the window
 
-    open_button = tk.Button(root, text="Open XML File", command=lambda: open_file_dialog(output_text))   # create a button to open the file dialog
+    open_button = tk.Button(root, text="Open XML File", command=lambda: open_file_dialog(output_text, parsed_output_text))   # create a button to open the file dialog
     open_button.pack()  # pack the button into the window
 
-    output_text = tk.Text(root, height=100, width=100)  # create a text widget to display the XML
-    output_text.pack()  # pack the text widget into the window
+    output_text_label = tk.Label(root, text="DOM PARSER OUTPUT")  # create a label for the output text widget
+    output_text_label.pack()  # pack the label into the window
+    output_text = tk.Text(root, height=60, width=60)  # create a text widget to display the XML
+    output_text.pack(side=tk.LEFT)  # pack the text widget into the window
+    
+    parsed_output_text_label = tk.Label(root, text="PARSED XML OUTPUT")  # create a label for the output text widget
+    parsed_output_text_label.pack()  # pack the label into the window
+    parsed_output_text = tk.Text(root, height=60, width=60)  # create a text widget to display the XML
+    parsed_output_text.pack(side=tk.LEFT)  # pack the text widget into the window
 
     root.mainloop()  # start the main loop
 

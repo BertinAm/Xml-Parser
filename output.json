@@ -1,0 +1,23 @@
+{
+    "root": {
+        "name": "note",
+        "children": [
+            {
+                "name": "to",
+                "content": "Tobi"
+            },
+            {
+                "name": "from",
+                "content": "Loki"
+            },
+            {
+                "name": "heading",
+                "content": "Reminder"
+            },
+            {
+                "name": "body",
+                "content": "You're a ferret"
+            }
+        ]
+    }
+}

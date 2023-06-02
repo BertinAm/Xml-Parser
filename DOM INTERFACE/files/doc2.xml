@@ -3,11 +3,11 @@
   <person>
     <name>John Doe</name>
     <age>30</age>
-    <address>
-      <street>Main Street</street>
-      <city>New York</city>
-      <state>NY</state>
-      <postal-code>10001</postal-code>
-    </address>
+    <city>New York</city>
+  </person>
+  <person>
+    <name>Jane Smith</name>
+    <age>25</age>
+    <city>London</city>
   </person>
 </root>
